@@ -16,7 +16,7 @@ const config = {
             gravity: { y: 0 },
         },
     },
-    scene: GameScene_1.default,
+    scene: [GameScene_1.default],
     backgroundColor: '#eeeeee',
 };
 new phaser_1.default.Game(config);
