@@ -5,12 +5,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'player');
-        console.log('player created')
 
         // Add this entity to the scene's physics
         this.scene.physics.world.enable(this);
         // Add this entity to the scene's update list
         this.scene.add.existing(this);
+        scene.physics.add.existing(this);
 
         // Initialize the cursor keys
         this.cursorKeys = this.scene.input.keyboard.createCursorKeys();

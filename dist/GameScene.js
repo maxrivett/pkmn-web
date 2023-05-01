@@ -8,33 +8,43 @@ const Player_1 = __importDefault(require("./Player"));
 class GameScene extends phaser_1.default.Scene {
     constructor() {
         super({ key: 'GameScene' });
-        console.log('constructed');
     }
     preload() {
         // Preload assets here
-        this.load.image('tileset', 'assets/tileset.png'); //tileset
-        this.load.tilemapTiledJSON('tilemap', 'assets/tilemap.json');
         this.load.image('player', 'assets/sprites/player.png');
+        this.load.image("tiles", "assets/tiles/tileset.png");
+        this.load.tilemapTiledJSON("map", "assets/tiles/tilemap.json");
     }
     create() {
-        console.log('creating player...');
         // Create game entities here
-        const map = this.make.tilemap({ key: 'tilemap' });
-        const tileset = map.addTilesetImage('tileset');
-        console.log(map);
-        console.log(tileset);
-        const layer1 = map.createLayer('Tile Layer 1', tileset, 0, 0);
-        const layer2 = map.createLayer('Tile Layer 2', tileset, 0, 0);
+        const map = this.make.tilemap({ key: "map" });
+        // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
+        // Phaser's cache (i.e. the name you used in preload)
+        const tileset = map.addTilesetImage("tileset", "tiles");
+        // Parameters: layer name (or index) from Tiled, tileset, x, y
+        const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+        const belowLayer = map.createLayer("Below Player", tileset, 0, 0);
+        const worldLayer = map.createLayer("World", tileset, 0, 0);
+        const aboveLayer = map.createLayer("Above Player", tileset, 0, 0);
         // for collisions
-        layer1.setCollisionByProperty({ collides: false });
-        layer2.setCollisionByProperty({ collides: true });
-        this.player = new Player_1.default(this, 400, 300); // create a new Player entity at the center of the screen
+        worldLayer.setCollisionBetween(1, 21000, true);
+        // worldLayer.setCollisionByProperty({ collides: true });
+        const debugGraphics = this.add.graphics().setAlpha(0.75);
+        worldLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new phaser_1.default.Display.Color(243, 134, 48, 255),
+            faceColor: new phaser_1.default.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        });
+        this.player = new Player_1.default(this, 16, 24); // create a new Player entity at the center of the screen
+        aboveLayer.setDepth(10); // make sure above player
+        // enable physics for the player sprite
+        this.physics.add.existing(this.player);
         // for collisions
-        this.physics.add.collider(this.player, layer2);
+        this.physics.add.collider(this.player, worldLayer);
         // Camera to follow player around
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.centerOn(800, 1300);
+        // this.cameras.main.centerOn(800, 1300);
     }
     update() {
         // Update game entities here

@@ -7,11 +7,11 @@ const phaser_1 = __importDefault(require("phaser"));
 class Player extends phaser_1.default.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'player');
-        console.log('player created');
         // Add this entity to the scene's physics
         this.scene.physics.world.enable(this);
         // Add this entity to the scene's update list
         this.scene.add.existing(this);
+        scene.physics.add.existing(this);
         // Initialize the cursor keys
         this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
     }

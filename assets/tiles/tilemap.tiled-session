@@ -1,0 +1,42 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "tilemap.tmx": {
+            "scale": 0.494,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 400.80971659919027,
+                "y": 400.8097165991902
+            }
+        },
+        "tilemap.tmx#tileset": {
+            "scaleInDock": 1.9606
+        }
+    },
+    "last.exportedFilePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
+    "last.imagePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
+    "map.height": 25,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 25,
+    "openFiles": [
+    ],
+    "project": "tilemap.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "tilemap.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
