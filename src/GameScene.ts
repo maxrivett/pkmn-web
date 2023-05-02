@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 import Player from './Player';
 
+const TILE_WIDTH = 16;
+
 export default class GameScene extends Phaser.Scene {
     private player?: Player;
+    
 
     constructor() {
         super({ key: 'GameScene' });
@@ -42,7 +45,7 @@ export default class GameScene extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });        
 
-        this.player = new Player(this, 16, 24); // create a new Player entity at the center of the screen
+        this.player = new Player(this, TILE_WIDTH, 24); // create a new Player entity at the center of the screen
         
         aboveLayer.setDepth(10) // make sure above player
 

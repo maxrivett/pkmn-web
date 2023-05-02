@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
 const Player_1 = __importDefault(require("./Player"));
+const TILE_WIDTH = 16;
 class GameScene extends phaser_1.default.Scene {
     constructor() {
         super({ key: 'GameScene' });
@@ -35,7 +36,7 @@ class GameScene extends phaser_1.default.Scene {
             collidingTileColor: new phaser_1.default.Display.Color(243, 134, 48, 255),
             faceColor: new phaser_1.default.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });
-        this.player = new Player_1.default(this, 16, 24); // create a new Player entity at the center of the screen
+        this.player = new Player_1.default(this, TILE_WIDTH, 24); // create a new Player entity at the center of the screen
         aboveLayer.setDepth(10); // make sure above player
         // enable physics for the player sprite
         this.physics.add.existing(this.player);
