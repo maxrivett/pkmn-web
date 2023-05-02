@@ -2,6 +2,12 @@ import Phaser from 'phaser';
 
 const TILE_WIDTH = 16;
 const VELOCITY_EPSILON = 1e-2; // velocity close to zero
+const enum MOVEMENT_DIRECTION {
+    Up = 1,
+    Down,
+    Left,
+    Right,
+  }
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
@@ -31,19 +37,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.target.y = this.y;
         }
 
+        let modTargetX = this.target.x % TILE_WIDTH;
+        let modTargetY = this.target.y % TILE_WIDTH;
+        var direction = 0;
+
         // Check for input and update target if necessary
         // TODO: Do not allow diagonal movement
         if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
-            if (this.cursorKeys.up?.isDown) {
-                this.target.y -= TILE_WIDTH;
-            } else if (this.cursorKeys.down?.isDown) {
-                this.target.y += TILE_WIDTH;
+            if (this.cursorKeys.up?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Up)) {
+                this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                direction = MOVEMENT_DIRECTION.Up;
+            } else if (this.cursorKeys.down?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Down)) {
+                this.target.y += (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                direction = MOVEMENT_DIRECTION.Down;
             }
 
-            if (this.cursorKeys.left?.isDown) {
-                this.target.x -= TILE_WIDTH;
-            } else if (this.cursorKeys.right?.isDown) {
-                this.target.x += TILE_WIDTH;
+            if (this.cursorKeys.left?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Left)) {
+                this.target.x -= (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                direction = MOVEMENT_DIRECTION.Left;
+            } else if (this.cursorKeys.right?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Right)) {
+                this.target.x += (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                direction = MOVEMENT_DIRECTION.Right;
             }
         }
 
