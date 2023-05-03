@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
 const Player_1 = __importDefault(require("./Player"));
-const TILE_WIDTH = 16;
+const TILE_WIDTH = 32;
 const PLAYER_SPRITE = "guy"; // change later
+const ZONE = "zone1"; // player location for tilemap
 class GameScene extends phaser_1.default.Scene {
     constructor() {
         super({ key: 'GameScene' });
@@ -15,7 +16,7 @@ class GameScene extends phaser_1.default.Scene {
         // Preload assets here
         // this.load.image('player', 'assets/sprites/player.png');
         this.load.image("tiles", "../assets/tiles/tileset.png");
-        this.load.tilemapTiledJSON("map", "../assets/tiles/tilemap.json");
+        this.load.tilemapTiledJSON("map", `../assets/tiles/${ZONE}/tilemap.json`);
         // Sprite sheet
         this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });
     }
@@ -96,7 +97,8 @@ class GameScene extends phaser_1.default.Scene {
             collidingTileColor: new phaser_1.default.Display.Color(243, 134, 48, 255),
             faceColor: new phaser_1.default.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });
-        this.player = new Player_1.default(this, TILE_WIDTH, TILE_WIDTH); // create a new Player entity at the center of the screen
+        const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+        this.player = new Player_1.default(this, spawnPoint.x, spawnPoint.y); // create a new Player entity at spawn
         aboveLayer.setDepth(10); // make sure above player
         // enable physics for the player sprite
         this.physics.add.existing(this.player);

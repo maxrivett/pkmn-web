@@ -8,8 +8,10 @@
     ],
     "fileStates": {
     },
+    "last.exportedFilePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles/zone1",
     "last.imagePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
     "map.height": 80,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.width": 80,
     "openFiles": [

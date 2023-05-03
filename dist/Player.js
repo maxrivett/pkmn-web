@@ -4,8 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
-const TILE_WIDTH = 16;
+const TILE_WIDTH = 32;
 const VELOCITY_EPSILON = 1e-2; // velocity close to zero
+const WALK_TIME = 80; // pixels/second travel, used in moveTo
+const RUN_TIME = 140;
 class Player extends phaser_1.default.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'player');
@@ -31,8 +33,9 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
         }
         // used for movement checking only (so that no diagonal)
         var directionLocal = 0;
-        let modTargetX = this.target.x % TILE_WIDTH;
-        let modTargetY = this.target.y % TILE_WIDTH;
+        // So that player doesn't get caught between tiles
+        let modTargetX = (this.target.x % TILE_WIDTH) - (TILE_WIDTH / 2);
+        let modTargetY = (this.target.y % TILE_WIDTH) - (TILE_WIDTH / 2);
         // Standing sprite if no movement
         if (this.target.x === this.x && this.target.y === this.y) {
             switch (this.direction) {
@@ -53,7 +56,6 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
             }
         }
         // Check for input and update target if necessary
-        // TODO: Do not allow diagonal movement
         if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             if (((_a = this.cursorKeys.up) === null || _a === void 0 ? void 0 : _a.isDown) && (directionLocal == 0 || directionLocal == 1 /* MOVEMENT_DIRECTION.Up */)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
@@ -81,7 +83,7 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
             }
         }
         // Move towards target
-        this.scene.physics.moveTo(this, this.target.x, this.target.y, 100);
+        this.scene.physics.moveTo(this, this.target.x, this.target.y, WALK_TIME);
         // If close enough to target, snap position to target
         if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             this.setPosition(this.target.x, this.target.y);

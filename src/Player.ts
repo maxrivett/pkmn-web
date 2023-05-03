@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-const TILE_WIDTH = 16;
+const TILE_WIDTH = 32;
 const VELOCITY_EPSILON = 1e-2; // velocity close to zero
 const enum MOVEMENT_DIRECTION {
     Up = 1,
@@ -8,6 +8,8 @@ const enum MOVEMENT_DIRECTION {
     Left,
     Right,
 }
+const WALK_SPEED = 80; // pixels/second travel, used in moveTo
+const RUN_SPEED = 140;
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
@@ -27,8 +29,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Initialize the target
         this.target = new Phaser.Math.Vector2(this.x, this.y);
-        
-        
     }
 
     update() {
@@ -42,9 +42,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // used for movement checking only (so that no diagonal)
         var directionLocal = 0
 
-
-        let modTargetX = this.target.x % TILE_WIDTH;
-        let modTargetY = this.target.y % TILE_WIDTH;
+        // So that player doesn't get caught between tiles
+        let modTargetX = (this.target.x % TILE_WIDTH) - (TILE_WIDTH / 2);
+        let modTargetY = (this.target.y % TILE_WIDTH) - (TILE_WIDTH / 2);
 
         // Standing sprite if no movement
         if (this.target.x === this.x && this.target.y === this.y) {
@@ -67,7 +67,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Check for input and update target if necessary
-        // TODO: Do not allow diagonal movement
         if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             if (this.cursorKeys.up?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Up)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
@@ -95,7 +94,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Move towards target
-        this.scene.physics.moveTo(this, this.target.x, this.target.y, 100);
+        this.scene.physics.moveTo(this, this.target.x, this.target.y, WALK_SPEED);
 
         // If close enough to target, snap position to target
         if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {

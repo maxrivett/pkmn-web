@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="4">
+ <editorsettings>
+  <export target="tilemap.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="21000" columns="140">
   <image source="../tileset.png" width="4480" height="4800"/>
  </tileset>
@@ -342,4 +345,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Objects">
+  <object id="3" name="Spawn Point" x="1328" y="1456">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

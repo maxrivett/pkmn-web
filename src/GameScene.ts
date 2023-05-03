@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 import Player from './Player';
 
-const TILE_WIDTH = 16;
+const TILE_WIDTH = 32;
 const PLAYER_SPRITE = "guy" // change later
+const ZONE = "zone1"; // player location for tilemap
 
 export default class GameScene extends Phaser.Scene {
     private player?: Player;
@@ -16,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
         // Preload assets here
         // this.load.image('player', 'assets/sprites/player.png');
         this.load.image("tiles", "../assets/tiles/tileset.png");
-        this.load.tilemapTiledJSON("map", "../assets/tiles/tilemap.json");
+        this.load.tilemapTiledJSON("map", `../assets/tiles/${ZONE}/tilemap.json`);
 
         // Sprite sheet
         this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });
@@ -109,7 +110,8 @@ export default class GameScene extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });        
 
-        this.player = new Player(this, TILE_WIDTH, TILE_WIDTH); // create a new Player entity at the center of the screen
+        const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+        this.player = new Player(this, spawnPoint.x, spawnPoint.y); // create a new Player entity at spawn
         
         aboveLayer.setDepth(10) // make sure above player
 
