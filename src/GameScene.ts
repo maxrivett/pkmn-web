@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Player from './Player';
 
 const TILE_WIDTH = 16;
+const PLAYER_SPRITE = "guy" // change later
 
 export default class GameScene extends Phaser.Scene {
     private player?: Player;
@@ -13,14 +14,77 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         // Preload assets here
-        this.load.image('player', 'assets/sprites/player.png');
+        // this.load.image('player', 'assets/sprites/player.png');
+        this.load.image("tiles", "../assets/tiles/tileset.png");
+        this.load.tilemapTiledJSON("map", "../assets/tiles/tilemap.json");
 
-        this.load.image("tiles", "assets/tiles/tileset.png");
-        this.load.tilemapTiledJSON("map", "assets/tiles/tilemap.json");
-
+        // Sprite sheet
+        this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });
     }
 
     create() {
+        // Sprite animations
+        this.anims.create({
+            key: 'up',
+            frames: [
+                { key: 'player', frame: 0 },
+                { key: 'player', frame: 10 },
+                { key: 'player', frame: 0 },
+                { key: 'player', frame: 2 },
+            ],
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'right',
+            frames: [
+                { key: 'player', frame: 1 },
+                { key: 'player', frame: 4 },
+                { key: 'player', frame: 1 },
+                { key: 'player', frame: 7 },
+            ],
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'down',
+            frames: [
+                { key: 'player', frame: 5 },
+                { key: 'player', frame: 8 },
+                { key: 'player', frame: 5 },
+                { key: 'player', frame: 11 },
+            ],
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'left',
+            frames: [
+                { key: 'player', frame: 6 },
+                { key: 'player', frame: 3 },
+                { key: 'player', frame: 6 },
+                { key: 'player', frame: 9 },
+            ],
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'stand_left', frames: [ { key: 'player', frame: 6 }, ], frameRate: 10, repeat: -1
+        });
+        this.anims.create({
+            key: 'stand_right', frames: [ { key: 'player', frame: 1 }, ], frameRate: 10, repeat: -1
+        });
+        this.anims.create({
+            key: 'stand_up', frames: [ { key: 'player', frame: 0 }, ], frameRate: 10, repeat: -1
+        });
+        this.anims.create({
+            key: 'stand_down', frames: [ { key: 'player', frame: 5 }, ], frameRate: 10, repeat: -1
+        });
+
         // Create game entities here
 
         const map = this.make.tilemap({ key: "map" });
@@ -45,7 +109,7 @@ export default class GameScene extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });        
 
-        this.player = new Player(this, TILE_WIDTH, 24); // create a new Player entity at the center of the screen
+        this.player = new Player(this, TILE_WIDTH, TILE_WIDTH); // create a new Player entity at the center of the screen
         
         aboveLayer.setDepth(10) // make sure above player
 

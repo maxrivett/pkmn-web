@@ -1,0 +1,22 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+    },
+    "last.imagePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
+    "map.height": 80,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 80,
+    "openFiles": [
+    ],
+    "project": "tilemap.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}

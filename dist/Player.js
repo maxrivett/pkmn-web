@@ -9,6 +9,7 @@ const VELOCITY_EPSILON = 1e-2; // velocity close to zero
 class Player extends phaser_1.default.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'player');
+        this.direction = 2 /* MOVEMENT_DIRECTION.Down */; // Initialize direction to Down
         // Add this entity to the scene's physics
         this.scene.physics.world.enable(this);
         // Add this entity to the scene's update list
@@ -28,27 +29,55 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
             this.target.x = this.x;
             this.target.y = this.y;
         }
+        // used for movement checking only (so that no diagonal)
+        var directionLocal = 0;
         let modTargetX = this.target.x % TILE_WIDTH;
         let modTargetY = this.target.y % TILE_WIDTH;
-        var direction = 0;
+        // Standing sprite if no movement
+        if (this.target.x === this.x && this.target.y === this.y) {
+            switch (this.direction) {
+                case 1 /* MOVEMENT_DIRECTION.Up */:
+                    this.anims.play('stand_up', true);
+                    break;
+                case 2 /* MOVEMENT_DIRECTION.Down */:
+                    this.anims.play('stand_down', true);
+                    break;
+                case 3 /* MOVEMENT_DIRECTION.Left */:
+                    this.anims.play('stand_left', true);
+                    break;
+                case 4 /* MOVEMENT_DIRECTION.Right */:
+                    this.anims.play('stand_right', true);
+                    break;
+                default:
+                    break;
+            }
+        }
         // Check for input and update target if necessary
         // TODO: Do not allow diagonal movement
         if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
-            if (((_a = this.cursorKeys.up) === null || _a === void 0 ? void 0 : _a.isDown) && (direction == 0 || direction == 1 /* MOVEMENT_DIRECTION.Up */)) {
+            if (((_a = this.cursorKeys.up) === null || _a === void 0 ? void 0 : _a.isDown) && (directionLocal == 0 || directionLocal == 1 /* MOVEMENT_DIRECTION.Up */)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
-                direction = 1 /* MOVEMENT_DIRECTION.Up */;
+                this.direction = 1 /* MOVEMENT_DIRECTION.Up */;
+                directionLocal = 1 /* MOVEMENT_DIRECTION.Up */;
+                this.anims.play('up', true);
             }
-            else if (((_b = this.cursorKeys.down) === null || _b === void 0 ? void 0 : _b.isDown) && (direction == 0 || direction == 2 /* MOVEMENT_DIRECTION.Down */)) {
+            else if (((_b = this.cursorKeys.down) === null || _b === void 0 ? void 0 : _b.isDown) && (directionLocal == 0 || directionLocal == 2 /* MOVEMENT_DIRECTION.Down */)) {
                 this.target.y += (modTargetY === 0) ? TILE_WIDTH : modTargetY;
-                direction = 2 /* MOVEMENT_DIRECTION.Down */;
+                this.direction = 2 /* MOVEMENT_DIRECTION.Down */;
+                directionLocal = 2 /* MOVEMENT_DIRECTION.Down */;
+                this.anims.play('down', true);
             }
-            if (((_c = this.cursorKeys.left) === null || _c === void 0 ? void 0 : _c.isDown) && (direction == 0 || direction == 3 /* MOVEMENT_DIRECTION.Left */)) {
+            if (((_c = this.cursorKeys.left) === null || _c === void 0 ? void 0 : _c.isDown) && (directionLocal == 0 || directionLocal == 3 /* MOVEMENT_DIRECTION.Left */)) {
                 this.target.x -= (modTargetX === 0) ? TILE_WIDTH : modTargetX;
-                direction = 3 /* MOVEMENT_DIRECTION.Left */;
+                this.direction = 3 /* MOVEMENT_DIRECTION.Left */;
+                directionLocal = 3 /* MOVEMENT_DIRECTION.Left */;
+                this.anims.play('left', true);
             }
-            else if (((_d = this.cursorKeys.right) === null || _d === void 0 ? void 0 : _d.isDown) && (direction == 0 || direction == 4 /* MOVEMENT_DIRECTION.Right */)) {
+            else if (((_d = this.cursorKeys.right) === null || _d === void 0 ? void 0 : _d.isDown) && (directionLocal == 0 || directionLocal == 4 /* MOVEMENT_DIRECTION.Right */)) {
                 this.target.x += (modTargetX === 0) ? TILE_WIDTH : modTargetX;
-                direction = 4 /* MOVEMENT_DIRECTION.Right */;
+                this.direction = 4 /* MOVEMENT_DIRECTION.Right */;
+                directionLocal = 4 /* MOVEMENT_DIRECTION.Right */;
+                this.anims.play('right', true);
             }
         }
         // Move towards target

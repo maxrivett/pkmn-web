@@ -7,8 +7,8 @@ My attempt at an early-gen Pokemon-esque game.
 - [x] Player Movement
 - [x] Tilemap
 - [x] Collisions
-- [ ] Blocky movement (Player should not be able to stand on 2 tiles at once)
-- [ ] Player Animations
+- [x] Blocky movement (Player should not be able to stand on 2 tiles at once)
+- [x] Player Animations
 - [ ] Multiple Scenes
 - [ ] Spawnpoint
 - [ ] Sidebar

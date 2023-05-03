@@ -7,10 +7,11 @@ const enum MOVEMENT_DIRECTION {
     Down,
     Left,
     Right,
-  }
+}
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
+    private direction: MOVEMENT_DIRECTION = MOVEMENT_DIRECTION.Down;  // Initialize direction to Down
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'player');
@@ -26,6 +27,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Initialize the target
         this.target = new Phaser.Math.Vector2(this.x, this.y);
+        
+        
     }
 
     update() {
@@ -36,28 +39,58 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.target.x = this.x;
             this.target.y = this.y;
         }
+        // used for movement checking only (so that no diagonal)
+        var directionLocal = 0
+
 
         let modTargetX = this.target.x % TILE_WIDTH;
         let modTargetY = this.target.y % TILE_WIDTH;
-        var direction = 0;
+
+        // Standing sprite if no movement
+        if (this.target.x === this.x && this.target.y === this.y) {
+            switch (this.direction) {  
+                case MOVEMENT_DIRECTION.Up:
+                    this.anims.play('stand_up', true);
+                    break;
+                case MOVEMENT_DIRECTION.Down:
+                    this.anims.play('stand_down', true);
+                    break;
+                case MOVEMENT_DIRECTION.Left:
+                    this.anims.play('stand_left', true);
+                    break;
+                case MOVEMENT_DIRECTION.Right:
+                    this.anims.play('stand_right', true);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         // Check for input and update target if necessary
         // TODO: Do not allow diagonal movement
         if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
-            if (this.cursorKeys.up?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Up)) {
+            if (this.cursorKeys.up?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Up)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
-                direction = MOVEMENT_DIRECTION.Up;
-            } else if (this.cursorKeys.down?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Down)) {
+                this.direction = MOVEMENT_DIRECTION.Up;
+                directionLocal = MOVEMENT_DIRECTION.Up;
+                this.anims.play('up', true);
+            } else if (this.cursorKeys.down?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Down)) {
                 this.target.y += (modTargetY === 0) ? TILE_WIDTH : modTargetY;
-                direction = MOVEMENT_DIRECTION.Down;
+                this.direction = MOVEMENT_DIRECTION.Down;
+                directionLocal = MOVEMENT_DIRECTION.Down;
+                this.anims.play('down', true);
             }
 
-            if (this.cursorKeys.left?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Left)) {
+            if (this.cursorKeys.left?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Left)) {
                 this.target.x -= (modTargetX === 0) ? TILE_WIDTH : modTargetX;
-                direction = MOVEMENT_DIRECTION.Left;
-            } else if (this.cursorKeys.right?.isDown && (direction == 0 || direction == MOVEMENT_DIRECTION.Right)) {
+                this.direction = MOVEMENT_DIRECTION.Left;
+                directionLocal = MOVEMENT_DIRECTION.Left;
+                this.anims.play('left', true);
+            } else if (this.cursorKeys.right?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Right)) {
                 this.target.x += (modTargetX === 0) ? TILE_WIDTH : modTargetX;
-                direction = MOVEMENT_DIRECTION.Right;
+                this.direction = MOVEMENT_DIRECTION.Right;
+                directionLocal = MOVEMENT_DIRECTION.Right;
+                this.anims.play('right', true);
             }
         }
 

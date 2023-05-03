@@ -7,12 +7,15 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "": {
+            "scaleInDock": 0.9459
+        },
         "tilemap.tmx": {
-            "scale": 0.494,
-            "selectedLayer": 0,
+            "scale": 0.988,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 400.80971659919027,
-                "y": 400.8097165991902
+                "x": 200.40485829959513,
+                "y": 207.48987854251013
             }
         },
         "tilemap.tmx#tileset": {
