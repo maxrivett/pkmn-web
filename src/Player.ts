@@ -69,27 +69,33 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Check for input and update target if necessary
         if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             if (this.cursorKeys.up?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Up)) {
-                this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                this.target.y -= (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = MOVEMENT_DIRECTION.Up;
                 directionLocal = MOVEMENT_DIRECTION.Up;
                 this.anims.play('up', true);
+                console.log("moving up");
             } else if (this.cursorKeys.down?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Down)) {
-                this.target.y += (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                this.target.y += (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = MOVEMENT_DIRECTION.Down;
                 directionLocal = MOVEMENT_DIRECTION.Down;
                 this.anims.play('down', true);
+                console.log("moving down");
             }
 
             if (this.cursorKeys.left?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Left)) {
-                this.target.x -= (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                this.target.x -= (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = MOVEMENT_DIRECTION.Left;
                 directionLocal = MOVEMENT_DIRECTION.Left;
                 this.anims.play('left', true);
+                console.log("moving left");
             } else if (this.cursorKeys.right?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Right)) {
-                this.target.x += (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                this.target.x += (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = MOVEMENT_DIRECTION.Right;
                 directionLocal = MOVEMENT_DIRECTION.Right;
                 this.anims.play('right', true);
+                console.log("moving right");
+                console.log("this.x = " + this.x);
+                console.log("this.target.x = " + this.target.x);
             }
         }
 

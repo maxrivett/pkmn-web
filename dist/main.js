@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
-const GameScene_1 = __importDefault(require("./GameScene"));
+const GameScene1_1 = __importDefault(require("./scenes/GameScene1"));
+const GameScene2_1 = __importDefault(require("./scenes/GameScene2"));
 const config = {
     title: 'Pokemon Game',
     type: phaser_1.default.AUTO,
@@ -17,8 +18,12 @@ const config = {
             debug: true
         },
     },
-    scene: [GameScene_1.default],
-    backgroundColor: '#eeeeee',
+    scene: [GameScene2_1.default, GameScene1_1.default],
+    backgroundColor: '#000000',
+    scale: {
+        mode: phaser_1.default.Scale.FIT,
+        autoCenter: phaser_1.default.Scale.CENTER_BOTH, // center the game canvas
+    },
 };
 new phaser_1.default.Game(config);
 //# sourceMappingURL=main.js.map

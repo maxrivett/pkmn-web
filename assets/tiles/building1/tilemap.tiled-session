@@ -1,0 +1,27 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 0.6037
+        }
+    },
+    "last.exportedFilePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles/building1",
+    "last.imagePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
+    "map.height": 7,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 9,
+    "openFiles": [
+    ],
+    "project": "tilemap.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}

@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
 const TILE_WIDTH = 32;
 const VELOCITY_EPSILON = 1e-2; // velocity close to zero
-const WALK_TIME = 80; // pixels/second travel, used in moveTo
-const RUN_TIME = 140;
+const WALK_SPEED = 80; // pixels/second travel, used in moveTo
+const RUN_SPEED = 140;
 class Player extends phaser_1.default.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'player');
@@ -58,32 +58,38 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
         // Check for input and update target if necessary
         if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             if (((_a = this.cursorKeys.up) === null || _a === void 0 ? void 0 : _a.isDown) && (directionLocal == 0 || directionLocal == 1 /* MOVEMENT_DIRECTION.Up */)) {
-                this.target.y -= (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                this.target.y -= (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = 1 /* MOVEMENT_DIRECTION.Up */;
                 directionLocal = 1 /* MOVEMENT_DIRECTION.Up */;
                 this.anims.play('up', true);
+                console.log("moving up");
             }
             else if (((_b = this.cursorKeys.down) === null || _b === void 0 ? void 0 : _b.isDown) && (directionLocal == 0 || directionLocal == 2 /* MOVEMENT_DIRECTION.Down */)) {
-                this.target.y += (modTargetY === 0) ? TILE_WIDTH : modTargetY;
+                this.target.y += (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = 2 /* MOVEMENT_DIRECTION.Down */;
                 directionLocal = 2 /* MOVEMENT_DIRECTION.Down */;
                 this.anims.play('down', true);
+                console.log("moving down");
             }
             if (((_c = this.cursorKeys.left) === null || _c === void 0 ? void 0 : _c.isDown) && (directionLocal == 0 || directionLocal == 3 /* MOVEMENT_DIRECTION.Left */)) {
-                this.target.x -= (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                this.target.x -= (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = 3 /* MOVEMENT_DIRECTION.Left */;
                 directionLocal = 3 /* MOVEMENT_DIRECTION.Left */;
                 this.anims.play('left', true);
+                console.log("moving left");
             }
             else if (((_d = this.cursorKeys.right) === null || _d === void 0 ? void 0 : _d.isDown) && (directionLocal == 0 || directionLocal == 4 /* MOVEMENT_DIRECTION.Right */)) {
-                this.target.x += (modTargetX === 0) ? TILE_WIDTH : modTargetX;
+                this.target.x += (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = 4 /* MOVEMENT_DIRECTION.Right */;
                 directionLocal = 4 /* MOVEMENT_DIRECTION.Right */;
                 this.anims.play('right', true);
+                console.log("moving right");
+                console.log("this.x = " + this.x);
+                console.log("this.target.x = " + this.target.x);
             }
         }
         // Move towards target
-        this.scene.physics.moveTo(this, this.target.x, this.target.y, WALK_TIME);
+        this.scene.physics.moveTo(this, this.target.x, this.target.y, WALK_SPEED);
         // If close enough to target, snap position to target
         if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
             this.setPosition(this.target.x, this.target.y);

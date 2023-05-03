@@ -5,8 +5,21 @@
     },
     "activeFile": "",
     "expandedProjectPaths": [
+        "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "tilemap.tmx": {
+            "scale": 3.0267,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1313.3115274060858,
+                "y": 1495.3579806389798
+            }
+        },
+        "tilemap.tmx#tileset": {
+            "scaleInDock": 0.4648
+        }
     },
     "last.exportedFilePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles/zone1",
     "last.imagePath": "/Users/max.rivett/Desktop/Other/CS/Projects/pkmn-web/assets/tiles",
@@ -19,6 +32,7 @@
     "project": "tilemap.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "tilemap.tmx"
     ],
     "tileset.embedInMap": true
 }
