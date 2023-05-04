@@ -7,10 +7,10 @@ const GameSceneBase_1 = __importDefault(require("../GameSceneBase"));
 const ZONE = "zone1";
 class GameScene1 extends GameSceneBase_1.default {
     constructor() {
-        super({ key: 'GameScene1' });
+        super('GameScene1', ZONE);
     }
-    init() {
-        this.zone = ZONE;
+    preload() {
+        this.preloadResources();
     }
 }
 exports.default = GameScene1;

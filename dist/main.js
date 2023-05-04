@@ -18,7 +18,7 @@ const config = {
             debug: true
         },
     },
-    scene: [GameScene2_1.default, GameScene1_1.default],
+    scene: [GameScene1_1.default, GameScene2_1.default],
     backgroundColor: '#000000',
     scale: {
         mode: phaser_1.default.Scale.FIT,

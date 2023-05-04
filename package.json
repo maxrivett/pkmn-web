@@ -20,6 +20,7 @@
   "homepage": "https://github.com/maxrivett/pkmn-web#readme",
   "dependencies": {
     "phaser": "^3.60.0",
+    "phaser-plugin-scene-watcher": "^6.0.0",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

@@ -4,10 +4,10 @@ const ZONE = "zone1";
 
 export default class GameScene1 extends GameSceneBase {
     constructor() {
-        super({ key: 'GameScene1' });
+        super('GameScene1', ZONE);
     }
 
-    init() {
-        this.zone = ZONE;
+    preload() {
+        this.preloadResources();
     }
 }

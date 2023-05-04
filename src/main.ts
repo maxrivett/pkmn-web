@@ -15,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
             debug: true
         },
     },
-    scene: [GameScene2, GameScene1],
+    scene: [GameScene1, GameScene2],
     backgroundColor: '#000000',
     scale: {
         mode: Phaser.Scale.FIT, // make the game scale to fit the container

@@ -13,7 +13,7 @@ const RUN_SPEED = 140;
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
-    private direction: MOVEMENT_DIRECTION = MOVEMENT_DIRECTION.Down;  // Initialize direction to Down
+    private direction: MOVEMENT_DIRECTION = MOVEMENT_DIRECTION.Up;  // Initialize direction to Up
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'player');
@@ -73,13 +73,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.direction = MOVEMENT_DIRECTION.Up;
                 directionLocal = MOVEMENT_DIRECTION.Up;
                 this.anims.play('up', true);
-                console.log("moving up");
             } else if (this.cursorKeys.down?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Down)) {
                 this.target.y += (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = MOVEMENT_DIRECTION.Down;
                 directionLocal = MOVEMENT_DIRECTION.Down;
                 this.anims.play('down', true);
-                console.log("moving down");
             }
 
             if (this.cursorKeys.left?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Left)) {
@@ -87,15 +85,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.direction = MOVEMENT_DIRECTION.Left;
                 directionLocal = MOVEMENT_DIRECTION.Left;
                 this.anims.play('left', true);
-                console.log("moving left");
             } else if (this.cursorKeys.right?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Right)) {
                 this.target.x += (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = MOVEMENT_DIRECTION.Right;
                 directionLocal = MOVEMENT_DIRECTION.Right;
                 this.anims.play('right', true);
-                console.log("moving right");
-                console.log("this.x = " + this.x);
-                console.log("this.target.x = " + this.target.x);
             }
         }
 

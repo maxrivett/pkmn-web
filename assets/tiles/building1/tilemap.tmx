@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="9" height="7" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="2">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="9" height="7" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="3">
+ <editorsettings>
+  <export target="tilemap.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="21000" columns="140">
   <image source="../tileset.png" width="4480" height="4800"/>
  </tileset>
@@ -51,7 +54,13 @@
 </data>
  </layer>
  <objectgroup id="5" name="Objects">
-  <object id="1" name="Spawn Point" x="144" y="208">
+  <object id="1" name="Spawn Point" x="144" y="176">
+   <point/>
+  </object>
+  <object id="2" name="Exit" x="144" y="208">
+   <properties>
+    <property name="targetScene" value="GameScene1"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

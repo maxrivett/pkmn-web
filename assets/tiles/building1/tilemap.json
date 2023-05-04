@@ -95,6 +95,24 @@
                  "visible":true,
                  "width":0,
                  "x":144,
+                 "y":176
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"Exit",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"targetScene",
+                         "type":"string",
+                         "value":"GameScene1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":144,
                  "y":208
                 }],
          "opacity":1,
@@ -104,7 +122,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":2,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
