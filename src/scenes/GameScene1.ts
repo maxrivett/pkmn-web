@@ -6,8 +6,4 @@ export default class GameScene1 extends GameSceneBase {
     constructor() {
         super('GameScene1', ZONE);
     }
-
-    preload() {
-        this.preloadResources();
-    }
 }

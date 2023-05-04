@@ -1,14 +1,15 @@
 import Phaser from 'phaser';
 import Player from './Player';
+import Sidebar from './Sidebar'; // Import the Sidebar class
 
 const TILE_WIDTH = 32;
 const PLAYER_SPRITE = "cynthia" // change later
 const MAP_MAX_WIDTH = 800;
 const MAP_MAX_HEIGHT = 600;
-// const ZONE = "zone1"; // player location for tilemap
 
 export default class GameScene extends Phaser.Scene {
     private player?: Player;
+    private sidebar?: Sidebar;
     zone: string;
 
     constructor(sceneKey: string, zone: string) {
@@ -19,11 +20,10 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         // Preload assets here
         this.preloadResources();
-        
     }
 
     create() {
-        (this.plugins.get('PhaserSceneWatcherPlugin') as any).watchAll();
+        // (this.plugins.get('PhaserSceneWatcherPlugin') as any).watchAll();
         this.makeAnimations();
 
         // Create game entities here
@@ -61,12 +61,7 @@ export default class GameScene extends Phaser.Scene {
             this.physics.add.overlap(this.player, exit, () => {
                 const targetScene = (exitPoint as any).properties.find((prop: { name: string; }) => prop.name === "targetScene").value;
                 if (targetScene) {
-                    let oldScene = this.scene.key;
-                    // (this.sys as any).watchScene(oldScene);
-                    // (this.sys as any).watchScene(targetScene);
-                    this.scene.pause(oldScene);
                     this.scene.start(targetScene);
-                    this.scene.moveAbove(oldScene);
                 }
             });
         }
@@ -86,6 +81,18 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.setBounds(-offsetX, -offsetY, map.widthInPixels, map.heightInPixels); 
         // Set the camera position to the center of the scene
         this.cameras.main.setScroll(offsetX, offsetY);
+        this.cameras.main.setBackgroundColor('#888888');
+
+        // Sidebar
+        this.sidebar = new Sidebar(this, 0, 0);
+        // this.sidebar = new Sidebar(this, this.cameras.main.centerX, this.cameras.main.centerY);
+        // this.sidebar.updatePosition(this.cameras.main);
+
+        this.input.keyboard.on('keydown-S', () => {
+            if (this.sidebar) {
+                this.sidebar.setVisible(!this.sidebar.visible);
+            }
+        });
     }
 
     update() {
@@ -176,12 +183,13 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preloadResources() {
+        // keys can load only once. This is why we do different keys for all maps (not necessary for tileset since the same for all)
         this.load.image("tiles", "../assets/tiles/tileset.png");
         this.load.tilemapTiledJSON(`map_${this.zone}`, `../assets/tiles/${this.zone}/tilemap.json`);
 
         // Sprite sheet
         this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });
         // Scene Watcher
-        this.load.plugin('PhaserSceneWatcherPlugin', 'https://cdn.jsdelivr.net/npm/phaser-plugin-scene-watcher@6.0.0/dist/phaser-plugin-scene-watcher.umd.js', true);
+        // this.load.plugin('PhaserSceneWatcherPlugin', 'https://cdn.jsdelivr.net/npm/phaser-plugin-scene-watcher@6.0.0/dist/phaser-plugin-scene-watcher.umd.js', true);
     }
 }

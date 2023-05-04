@@ -9,9 +9,6 @@ class GameScene1 extends GameSceneBase_1.default {
     constructor() {
         super('GameScene1', ZONE);
     }
-    preload() {
-        this.preloadResources();
-    }
 }
 exports.default = GameScene1;
 //# sourceMappingURL=GameScene1.js.map
