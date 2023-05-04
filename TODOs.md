@@ -2,3 +2,4 @@
 
 - [ ] Fix RUN_SPEED bug
 - [ ] Make Player a couple pixels smaller so it can instantly turn and walk through one tile tunnel
+- [ ] Make transition between scenes (blackout)
