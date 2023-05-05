@@ -30,4 +30,10 @@
 - Fixed bug affecting movement
 - Added a basic sidebar with button options
 
+### May 4, 2023
+- Improved the sidebar with new fonts, colors, etc
+- Added a player json file with relevant data
+- Implemented the save game function
+  - Does not yet update the json
+
 <br>
