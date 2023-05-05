@@ -1,0 +1,11 @@
+{
+    "name": "Max",
+    "sprite": "cynthia", 
+    "active": false,
+    "currentScene": "GameScene1",
+    "position": {
+      "x": 300,
+      "y": 400
+    },
+    "pokemon": [1, 2, 3]
+  }

@@ -4,11 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
+const FONT = 'PokemonPixel';
 class Sidebar extends phaser_1.default.GameObjects.Container {
-    constructor(scene, x, y) {
+    constructor(scene, x, y, playerData, player) {
         super(scene, x, y);
-        this.background = scene.add.rectangle(0, 0, scene.cameras.main.width / 4, scene.cameras.main.height, 0x000000, 0.5);
-        this.text = scene.add.text(0, 0, 'Sidebar', { color: '#ffffff' });
+        this.playerData = playerData;
+        this.player = player;
+        this.background = scene.add.rectangle(0, 0, scene.cameras.main.width / 2, scene.cameras.main.height * 2, 0xffffff, 1);
+        // Add the background first
+        this.add(this.background);
         // Initialize the array of buttons
         this.buttons = [];
         // Define the labels and callback functions for the buttons
@@ -20,23 +24,21 @@ class Sidebar extends phaser_1.default.GameObjects.Container {
         ];
         // Create the buttons
         buttonData.forEach((data, index) => {
-            const button = scene.add.text(10, 50 * (index + 1), data.label, { font: '16px Arial', color: '#ffffff' });
-            button.setInteractive();
-            button.on('pointerdown', () => {
-                data.callback.call(this);
+            const button = scene.add.text(10, 60 * (index), data.label, {
+                fontFamily: FONT,
+                fontSize: 50,
+                color: '#000000',
             });
-            this.buttons.push(button);
             this.add(button);
+            this.buttons.push(button);
         });
-        this.add(this.background);
-        this.add(this.text);
         this.setInteractive(new phaser_1.default.Geom.Rectangle(0, 0, this.background.width, this.background.height), phaser_1.default.Geom.Rectangle.Contains);
         this.on('pointerdown', (pointer) => {
             const localX = pointer.x - this.x;
             const localY = pointer.y - this.y;
-            this.buttons.forEach(button => {
+            this.buttons.forEach((button, index) => {
                 if (button.getBounds().contains(localX, localY)) {
-                    button.emit('pointerdown', pointer);
+                    buttonData[index].callback.call(this);
                 }
             });
         });
@@ -56,6 +58,15 @@ class Sidebar extends phaser_1.default.GameObjects.Container {
     }
     saveGame() {
         console.log('Save button clicked');
+        const currentPlayerScene = this.scene.scene.key;
+        const playerPosition = {
+            x: this.player.x,
+            y: this.player.y,
+        };
+        this.playerData.setCurrentScene(currentPlayerScene);
+        this.playerData.setPosition(this.player.x, this.player.y);
+        this.playerData.saveData(); // Save the player data to localStorage
+        console.log('Game saved:', this.playerData);
     }
 }
 exports.default = Sidebar;

@@ -19,11 +19,14 @@
   },
   "homepage": "https://github.com/maxrivett/pkmn-web#readme",
   "dependencies": {
+    "fs": "0.0.1-security",
     "phaser": "^3.60.0",
     "phaser-plugin-scene-watcher": "^6.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@types/webfontloader": "^1.6.35",
     "ts-loader": "^9.4.2",
     "webpack": "^5.81.0",
     "webpack-cli": "^5.0.2"

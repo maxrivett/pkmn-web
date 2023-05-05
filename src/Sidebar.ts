@@ -1,51 +1,75 @@
 import Phaser from 'phaser';
+import PlayerData from './PlayerData';
+import Player from './Player';
+
+const FONT = 'PokemonPixel';
 
 export default class Sidebar extends Phaser.GameObjects.Container {
     private background: Phaser.GameObjects.Rectangle;
-    private text: Phaser.GameObjects.Text;
     private buttons: Phaser.GameObjects.Text[];
+    private playerData: PlayerData;
+    private player: Player; 
+  
+    constructor(scene: Phaser.Scene, x: number, y: number, playerData: PlayerData, player: Player) {
+      super(scene, x, y);
+  
+      this.playerData = playerData;
+      this.player = player;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y);
-        this.background = scene.add.rectangle(0, 0, scene.cameras.main.width / 4, scene.cameras.main.height, 0x000000, 0.5);
-        this.text = scene.add.text(0, 0, 'Sidebar', { color: '#ffffff' });
+        this.background = scene.add.rectangle(
+        0,
+        0,
+        scene.cameras.main.width / 2,
+        scene.cameras.main.height * 2,
+        0xffffff,
+        1
+        );
+
+        // Add the background first
+        this.add(this.background);
 
         // Initialize the array of buttons
         this.buttons = [];
 
         // Define the labels and callback functions for the buttons
         const buttonData = [
-            { label: 'Pokemon', callback: this.openPokemon },
-            { label: 'Bag', callback: this.openBag },
-            { label: 'Settings', callback: this.openSettings },
-            { label: 'Save', callback: this.saveGame },
+        { label: 'Pokemon', callback: this.openPokemon },
+        { label: 'Bag', callback: this.openBag },
+        { label: 'Settings', callback: this.openSettings },
+        { label: 'Save', callback: this.saveGame },
         ];
 
         // Create the buttons
         buttonData.forEach((data, index) => {
-            const button = scene.add.text(10, 50 * (index + 1), data.label, { font: '16px Arial', color: '#ffffff' });
-            button.setInteractive();
-            button.on('pointerdown', () => {
-                data.callback.call(this);
-            });
-            this.buttons.push(button);
-            this.add(button);
+        const button = scene.add.text(10, 60 * (index), data.label, {
+            fontFamily: FONT,
+            fontSize: 50,
+            color: '#000000',
         });
 
-        this.add(this.background);
-        this.add(this.text);
+        this.add(button);
+        this.buttons.push(button);
+        });
 
-        this.setInteractive(new Phaser.Geom.Rectangle(0, 0, this.background.width, this.background.height), Phaser.Geom.Rectangle.Contains);
+        this.setInteractive(
+        new Phaser.Geom.Rectangle(
+            0,
+            0,
+            this.background.width,
+            this.background.height
+        ),
+        Phaser.Geom.Rectangle.Contains
+        );
 
         this.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-            const localX = pointer.x - this.x;
-            const localY = pointer.y - this.y;
+        const localX = pointer.x - this.x;
+        const localY = pointer.y - this.y;
 
-            this.buttons.forEach(button => {
-                if (button.getBounds().contains(localX, localY)) {
-                    button.emit('pointerdown', pointer);
-                }
-            });
+        this.buttons.forEach((button, index) => {
+            if (button.getBounds().contains(localX, localY)) {
+            buttonData[index].callback.call(this);
+            }
+        });
         });
 
         scene.add.existing(this);
@@ -54,19 +78,28 @@ export default class Sidebar extends Phaser.GameObjects.Container {
         this.setVisible(!this.visible); // make invisible to start
     }
 
-    openPokemon() {
-        console.log('Pokemon button clicked');
-    }
+  openPokemon() {
+    console.log('Pokemon button clicked');
+  }
 
-    openBag() {
-        console.log('Bag button clicked');
-    }
+  openBag() {
+    console.log('Bag button clicked');
+  }
 
-    openSettings() {
-        console.log('Settings button clicked');
-    }
+  openSettings() {
+    console.log('Settings button clicked');
+  }
 
-    saveGame() {
-        console.log('Save button clicked');
-    }
+  saveGame() {
+    console.log('Save button clicked');
+    const currentPlayerScene = this.scene.scene.key;
+    const playerPosition = {
+      x: this.player.x,
+      y: this.player.y,
+    };
+    this.playerData.setCurrentScene(currentPlayerScene);
+    this.playerData.setPosition(this.player.x, this.player.y);
+    this.playerData.saveData(); // Save the player data to localStorage
+    console.log('Game saved:', this.playerData);
+  }
 }
