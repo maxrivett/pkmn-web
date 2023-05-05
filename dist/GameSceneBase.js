@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const phaser_1 = __importDefault(require("phaser"));
 const Player_1 = __importDefault(require("./Player"));
 const Sidebar_1 = __importDefault(require("./Sidebar")); // Import the Sidebar class
-const PlayerData_1 = __importDefault(require("./PlayerData"));
 const TILE_WIDTH = 32;
 const PLAYER_SPRITE = "cynthia"; // change later
 const MAP_MAX_WIDTH = 800;
@@ -18,15 +17,13 @@ class GameScene extends phaser_1.default.Scene {
     }
     init(data) {
         this.playerData = data.playerData;
-        console.log('GameSceneBase playerData:', this.playerData);
     }
     preload() {
         // Preload assets here
         this.preloadResources();
     }
-    create() {
-        this.playerData = new PlayerData_1.default(this.cache.json.get('playerData'));
-        const playerData = this.playerData;
+    create(data) {
+        this.playerData = data.playerData;
         // (this.plugins.get('PhaserSceneWatcherPlugin') as any).watchAll();
         this.makeAnimations();
         // Create game entities here
@@ -47,15 +44,13 @@ class GameScene extends phaser_1.default.Scene {
         });
         // Spawn Point Object
         const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
-        console.log(this);
-        console.log("isActive:", this.playerData.isActive());
         if (!this.playerData.isActive()) { // meaning they just loaded into the game
             const { x, y } = this.playerData.getPosition();
-            this.player = new Player_1.default(this, x, y); // create a new Player entity at last save
+            this.player = new Player_1.default(this, x, y, this.playerData); // create a new Player entity at last save
             this.playerData.setActive(true);
         }
         else {
-            this.player = new Player_1.default(this, spawnPoint.x, spawnPoint.y); // create a new Player entity at spawn
+            this.player = new Player_1.default(this, spawnPoint.x, spawnPoint.y, this.playerData); // create a new Player entity at spawn
         }
         // Exit Object
         const exitPoint = map.findObject("Objects", obj => obj.name === "Exit");
@@ -66,7 +61,8 @@ class GameScene extends phaser_1.default.Scene {
             this.physics.add.overlap(this.player, exit, () => {
                 const targetScene = exitPoint.properties.find((prop) => prop.name === "targetScene").value;
                 if (targetScene) {
-                    this.scene.start(targetScene);
+                    this.playerData.setDirectionInteger(this.player.getDirection());
+                    this.scene.start(targetScene, { playerData: this.playerData });
                 }
             });
         }
@@ -180,7 +176,7 @@ class GameScene extends phaser_1.default.Scene {
         // keys can load only once. This is why we do different keys for all maps (not necessary for tileset since the same for all)
         this.load.image("tiles", "../assets/tiles/tileset.png");
         this.load.tilemapTiledJSON(`map_${this.zone}`, `../assets/tiles/${this.zone}/tilemap.json`);
-        this.load.json('playerData', '../data/player.json');
+        // this.load.json('playerData', '../data/player.json');
         // Load the sprite sheet
         this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });
         // Scene Watcher

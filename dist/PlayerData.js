@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class PlayerData {
     constructor(playerData) {
         this.storageKey = 'playerData';
-        console.log('PlayerData constructor:', playerData);
         this.data = playerData;
-        console.log('PlayerData constructed:', this);
     }
     getCurrentScene() {
         return this.data.currentScene;
@@ -22,14 +20,39 @@ class PlayerData {
     }
     isActive() {
         return this.data.active;
+        // return this.data && this.data.active;
     }
     setActive(active) {
         this.data.active = active;
     }
+    getDirection() {
+        return this.data.direction;
+    }
+    setDirectionString(direction) {
+        switch (direction) {
+            case ("Up"):
+                this.data.direction = 1;
+                break;
+            case ("Down"):
+                this.data.direction = 2;
+                break;
+            case ("Left"):
+                this.data.direction = 3;
+                break;
+            case ("Right"):
+                this.data.direction = 4;
+                break;
+            default:
+                this.data.direction = 1;
+                break;
+        }
+    }
+    setDirectionInteger(direction) {
+        this.data.direction = direction;
+    }
     saveData() {
         const data = JSON.stringify(this.data);
         localStorage.setItem(this.storageKey, data);
-        console.log('Player data saved to localStorage:', this.data);
     }
 }
 exports.default = PlayerData;

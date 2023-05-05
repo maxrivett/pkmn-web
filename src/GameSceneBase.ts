@@ -11,7 +11,7 @@ const MAP_MAX_HEIGHT = 600;
 
 export default class GameScene extends Phaser.Scene {
     private player?: Player;
-    public playerData!: PlayerData;
+    protected playerData!: PlayerData;
     private sidebar?: Sidebar;
     zone: string;
     
@@ -23,7 +23,6 @@ export default class GameScene extends Phaser.Scene {
 
     init(data: { playerData: PlayerData }) {
         this.playerData = data.playerData;
-        console.log('GameSceneBase playerData:', this.playerData);
     }
 
     preload() {
@@ -31,9 +30,9 @@ export default class GameScene extends Phaser.Scene {
         this.preloadResources();
     }
 
-    create() {
-        this.playerData = new PlayerData(this.cache.json.get('playerData'));
-        const playerData = this.playerData;
+    create(data: any) {
+        this.playerData = data.playerData;
+        
 
         // (this.plugins.get('PhaserSceneWatcherPlugin') as any).watchAll();
         this.makeAnimations();
@@ -61,16 +60,12 @@ export default class GameScene extends Phaser.Scene {
 
         // Spawn Point Object
         const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
-
-        console.log(this);
-        console.log("isActive:", this.playerData.isActive());
-
         if (!this.playerData.isActive()) { // meaning they just loaded into the game
             const { x, y } = this.playerData.getPosition();
-            this.player = new Player(this, x, y); // create a new Player entity at last save
+            this.player = new Player(this, x, y, this.playerData); // create a new Player entity at last save
             this.playerData.setActive(true);
         } else {
-            this.player = new Player(this, spawnPoint.x, spawnPoint.y); // create a new Player entity at spawn
+            this.player = new Player(this, spawnPoint.x, spawnPoint.y, this.playerData); // create a new Player entity at spawn
         }
 
 
@@ -84,7 +79,8 @@ export default class GameScene extends Phaser.Scene {
             this.physics.add.overlap(this.player, exit, () => {
                 const targetScene = (exitPoint as any).properties.find((prop: { name: string; }) => prop.name === "targetScene").value;
                 if (targetScene) {
-                    this.scene.start(targetScene);
+                    this.playerData.setDirectionInteger(this.player.getDirection());
+                    this.scene.start(targetScene, { playerData: this.playerData });
                 }
             });
         }
@@ -209,7 +205,7 @@ export default class GameScene extends Phaser.Scene {
         // keys can load only once. This is why we do different keys for all maps (not necessary for tileset since the same for all)
         this.load.image("tiles", "../assets/tiles/tileset.png");
         this.load.tilemapTiledJSON(`map_${this.zone}`, `../assets/tiles/${this.zone}/tilemap.json`);
-        this.load.json('playerData', '../data/player.json');
+        // this.load.json('playerData', '../data/player.json');
 
             // Load the sprite sheet
         this.load.spritesheet('player', `../assets/sprites/player/${PLAYER_SPRITE}sheet.png`, { frameWidth: 32, frameHeight: 32 });

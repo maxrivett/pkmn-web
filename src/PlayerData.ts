@@ -3,9 +3,7 @@ export default class PlayerData {
     private storageKey: string = 'playerData'; 
 
     constructor(playerData: any) {
-        console.log('PlayerData constructor:', playerData);
         this.data = playerData;
-        console.log('PlayerData constructed:', this); 
     }
 
     getCurrentScene(): string {
@@ -27,16 +25,44 @@ export default class PlayerData {
 
     isActive(): boolean {
         return this.data.active;
+        // return this.data && this.data.active;
     }
 
     setActive(active: boolean): void {
         this.data.active = active;
     }
 
+    getDirection(): integer {
+        return this.data.direction;
+    }
+
+    setDirectionString(direction: string): void {
+        switch (direction) {
+            case ("Up") :
+                this.data.direction = 1;
+                break;
+            case ("Down") :
+                this.data.direction = 2;
+                break;
+            case ("Left") :
+                this.data.direction = 3;
+                break;
+            case ("Right") :
+                this.data.direction = 4;
+                break;
+            default:
+                this.data.direction = 1;
+                break;               
+        }
+    }
+
+    setDirectionInteger(direction: integer): void {
+        this.data.direction = direction;
+    }
+
     saveData(): void {
         const data = JSON.stringify(this.data);
         localStorage.setItem(this.storageKey, data);
-        console.log('Player data saved to localStorage:', this.data);
     }
 
     // Add more getters and setters for other properties as needed

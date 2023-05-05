@@ -22,13 +22,23 @@ export default class BootScene extends Phaser.Scene {
         });
 
         // Load player data
-        this.playerData = await this.loadPlayerData();
-        console.log('BootScene playerData:', this.playerData);
+        const locallyStored = localStorage.getItem("playerData");
+        if (locallyStored) {
+            this.playerData = new PlayerData(JSON.parse(locallyStored));;
+        } else {
+            this.playerData = await this.loadPlayerData();
+        }        
+
     }
 
     fontLoaded() {
         // Start the next scene when the font is loaded
-        this.scene.start(this.playerData.getCurrentScene(), { playerData: this.playerData });
+        if (this.playerData) {
+            this.scene.start(this.playerData.getCurrentScene(), { playerData: this.playerData });
+        } else {
+            // If playerData is not yet initialized, wait for a short time and try again
+            setTimeout(() => this.fontLoaded(), 50);
+        }
     }
 
     private loadPlayerData(): Promise<PlayerData> {

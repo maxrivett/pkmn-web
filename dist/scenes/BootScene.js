@@ -32,13 +32,25 @@ class BootScene extends phaser_1.default.Scene {
                 }
             });
             // Load player data
-            this.playerData = yield this.loadPlayerData();
-            console.log('BootScene playerData:', this.playerData);
+            const locallyStored = localStorage.getItem("playerData");
+            if (locallyStored) {
+                this.playerData = new PlayerData_1.default(JSON.parse(locallyStored));
+                ;
+            }
+            else {
+                this.playerData = yield this.loadPlayerData();
+            }
         });
     }
     fontLoaded() {
         // Start the next scene when the font is loaded
-        this.scene.start(this.playerData.getCurrentScene(), { playerData: this.playerData });
+        if (this.playerData) {
+            this.scene.start(this.playerData.getCurrentScene(), { playerData: this.playerData });
+        }
+        else {
+            // If playerData is not yet initialized, wait for a short time and try again
+            setTimeout(() => this.fontLoaded(), 50);
+        }
     }
     loadPlayerData() {
         return new Promise((resolve) => {

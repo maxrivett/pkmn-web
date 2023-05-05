@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import PlayerData from './PlayerData';
 
 const TILE_WIDTH = 32;
 const VELOCITY_EPSILON = 1e-2; // velocity close to zero
@@ -13,9 +14,10 @@ const RUN_SPEED = 140;
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
-    private direction: MOVEMENT_DIRECTION = MOVEMENT_DIRECTION.Up;  // Initialize direction to Up
+    private direction: MOVEMENT_DIRECTION;  // Initialize direction to Up
+    private playerData: PlayerData;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number, playerData: PlayerData) {
         super(scene, x, y, 'player');
 
         // Add this entity to the scene's physics
@@ -29,6 +31,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Initialize the target
         this.target = new Phaser.Math.Vector2(this.x, this.y);
+        this.playerData = playerData;
+        this.direction = this.playerData.getDirection() || MOVEMENT_DIRECTION.Up;
     }
 
     update() {
@@ -73,11 +77,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.direction = MOVEMENT_DIRECTION.Up;
                 directionLocal = MOVEMENT_DIRECTION.Up;
                 this.anims.play('up', true);
+                this.playerData.setActive(true);
             } else if (this.cursorKeys.down?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Down)) {
                 this.target.y += (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = MOVEMENT_DIRECTION.Down;
                 directionLocal = MOVEMENT_DIRECTION.Down;
                 this.anims.play('down', true);
+                this.playerData.setActive(true);
             }
 
             if (this.cursorKeys.left?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Left)) {
@@ -85,11 +91,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.direction = MOVEMENT_DIRECTION.Left;
                 directionLocal = MOVEMENT_DIRECTION.Left;
                 this.anims.play('left', true);
+                this.playerData.setActive(true);
             } else if (this.cursorKeys.right?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Right)) {
                 this.target.x += (modTargetX === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetX));
                 this.direction = MOVEMENT_DIRECTION.Right;
                 directionLocal = MOVEMENT_DIRECTION.Right;
                 this.anims.play('right', true);
+                this.playerData.setActive(true);
             }
         }
 
@@ -101,5 +109,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.setPosition(this.target.x, this.target.y);
             this.body.reset(this.target.x, this.target.y);
         }
+    }
+
+    getDirection(): number {
+        return this.direction;
     }
 }

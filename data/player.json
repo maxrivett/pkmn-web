@@ -2,6 +2,7 @@
     "name": "Max",
     "sprite": "cynthia", 
     "active": false,
+    "direction": 1,
     "currentScene": "GameScene1",
     "position": {
       "x": 300,

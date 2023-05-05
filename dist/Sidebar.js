@@ -57,7 +57,6 @@ class Sidebar extends phaser_1.default.GameObjects.Container {
         console.log('Settings button clicked');
     }
     saveGame() {
-        console.log('Save button clicked');
         const currentPlayerScene = this.scene.scene.key;
         const playerPosition = {
             x: this.player.x,
@@ -65,6 +64,8 @@ class Sidebar extends phaser_1.default.GameObjects.Container {
         };
         this.playerData.setCurrentScene(currentPlayerScene);
         this.playerData.setPosition(this.player.x, this.player.y);
+        this.playerData.setActive(false);
+        this.playerData.setDirectionInteger(this.player.getDirection());
         this.playerData.saveData(); // Save the player data to localStorage
         console.log('Game saved:', this.playerData);
     }
