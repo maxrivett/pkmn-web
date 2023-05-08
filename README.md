@@ -11,7 +11,8 @@ My attempt at an early-gen Pokemon-esque game.
 - [x] Player Animations
 - [x] Multiple Scenes
 - [x] Spawnpoint
-- [ ] Sidebar
-- [ ] Data Storage / Saves
+- [x] Sidebar
+- [x] Data Storage / Saves
+- [ ] Add pokemon
 - [ ] Battle Scene
 - [ ] ...

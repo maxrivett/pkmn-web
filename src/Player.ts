@@ -11,11 +11,13 @@ const enum MOVEMENT_DIRECTION {
 }
 const WALK_SPEED = 80; // pixels/second travel, used in moveTo
 const RUN_SPEED = 140;
+
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private target: Phaser.Math.Vector2;
-    private direction: MOVEMENT_DIRECTION;  // Initialize direction to Up
+    private direction: MOVEMENT_DIRECTION;  
     private playerData: PlayerData;
+    public canMove = true; // false if sidebar etc is open
 
     constructor(scene: Phaser.Scene, x: number, y: number, playerData: PlayerData) {
         super(scene, x, y, 'player');
@@ -71,7 +73,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Check for input and update target if necessary
-        if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
+        if (Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1 && this.canMove) {
             if (this.cursorKeys.up?.isDown && (directionLocal == 0 || directionLocal == MOVEMENT_DIRECTION.Up)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = MOVEMENT_DIRECTION.Up;

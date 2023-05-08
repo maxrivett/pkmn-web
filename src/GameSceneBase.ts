@@ -32,6 +32,7 @@ export default class GameScene extends Phaser.Scene {
 
     create(data: any) {
         this.playerData = data.playerData;
+        this.physics.world.debugGraphic.visible = false; // debug graphics
         
 
         // (this.plugins.get('PhaserSceneWatcherPlugin') as any).watchAll();
@@ -51,12 +52,14 @@ export default class GameScene extends Phaser.Scene {
         // for collisions
         worldLayer.setCollisionBetween(1, 21000, true); // adding collisions for all tiles in the world layer
 
-        const debugGraphics = this.add.graphics().setAlpha(0.75);
-        worldLayer.renderDebug(debugGraphics, {
-            tileColor: null, // Color of non-colliding tiles
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        });        
+
+        // DEBUG GRAPHICS
+        // const debugGraphics = this.add.graphics().setAlpha(0.75);
+        // worldLayer.renderDebug(debugGraphics, {
+        //     tileColor: null, // Color of non-colliding tiles
+        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        // });        
 
         // Spawn Point Object
         const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
@@ -73,14 +76,26 @@ export default class GameScene extends Phaser.Scene {
         const exitPoint = map.findObject("Objects", obj => obj.name === "Exit");
         if (exitPoint) {
             const exit = this.add.rectangle(exitPoint.x, exitPoint.y, TILE_WIDTH / 2, TILE_WIDTH / 2, 0xff0000, 0);
-            this.physics.add.existing(exit, true);
+            this.physics.add.existing(exit, false); // make true to show the box
 
             // Collide with exit and start the target scene
+            let isFading = false; // Add a boolean flag to control the fading process
+
             this.physics.add.overlap(this.player, exit, () => {
-                const targetScene = (exitPoint as any).properties.find((prop: { name: string; }) => prop.name === "targetScene").value;
-                if (targetScene) {
-                    this.playerData.setDirectionInteger(this.player.getDirection());
-                    this.scene.start(targetScene, { playerData: this.playerData });
+                if (!isFading) { // Check if the fading process is not ongoing
+                    isFading = true; // Set the flag to true, indicating the fading process has started
+                    const targetScene = (exitPoint as any).properties.find((prop: { name: string; }) => prop.name === "targetScene").value;
+                    if (targetScene) {
+                        this.playerData.setDirectionInteger(this.player.getDirection());
+                        this.cameras.main.fadeOut(1000, 0, 0, 0)
+                        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                            this.cameras.main.fadeIn(1000, 0, 0, 0);
+                            this.scene.start(targetScene, { playerData: this.playerData });
+                            isFading = false; // Reset the flag to false once the process is complete
+                        });
+                    } else {
+                        isFading = false; // Reset the flag to false if no targetScene is found
+                    }
                 }
             });
         }
@@ -88,7 +103,7 @@ export default class GameScene extends Phaser.Scene {
         aboveLayer.setDepth(10) // make sure above player
 
         // enable physics for the player sprite
-        this.physics.add.existing(this.player);
+        this.physics.add.existing(this.player, false); // make true to show the box
         // for collisions
         this.physics.add.collider(this.player, worldLayer);
 
@@ -110,7 +125,13 @@ export default class GameScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-S', () => {
             if (this.sidebar) {
                 this.sidebar.setVisible(!this.sidebar.visible);
-            }
+                this.player.canMove = !this.sidebar.visible;
+                // if (!this.sidebar.visible) {
+                //     this.player.canMove = false; // dont let arrows move player when sidebar visible
+                // } else {
+                //     this.player.canMove = true; // let arrow keys move player since no sidebar
+                // }
+            } 
         });
     }
 
@@ -216,5 +237,7 @@ export default class GameScene extends Phaser.Scene {
         // this.load.plugin('PhaserSceneWatcherPlugin', 'https://cdn.jsdelivr.net/npm/phaser-plugin-scene-watcher@6.0.0/dist/phaser-plugin-scene-watcher.umd.js', true);
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js'); // for font
     }
+
+    
 }
 

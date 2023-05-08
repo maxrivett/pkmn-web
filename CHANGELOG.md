@@ -36,4 +36,13 @@
 - Implemented the save game function
   - Does not yet update the json
 
+### May 5, 2023
+- Got saves working using localStorage
+- Player now always faces the correct direction when entering a new scene
+
+### May 7, 2023
+- Added a Pokemon team scene
+  - Integrates data from pokemon json
+- Sidebar now controlled by arrow keys
+
 <br>

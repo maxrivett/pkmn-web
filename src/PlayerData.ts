@@ -65,5 +65,18 @@ export default class PlayerData {
         localStorage.setItem(this.storageKey, data);
     }
 
+    getName(): string {
+        return this.data.name;
+    }
+
+    getPokemon(): string[] {
+        return this.data.pokemon;
+    }
+
+    setPokemon(pokemon: string[]): void {
+        // TODO: make sure not more than 6
+        this.data.pokemon = pokemon;
+    }
+
     // Add more getters and setters for other properties as needed
 }

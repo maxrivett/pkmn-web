@@ -11,6 +11,7 @@ const RUN_SPEED = 140;
 class Player extends phaser_1.default.Physics.Arcade.Sprite {
     constructor(scene, x, y, playerData) {
         super(scene, x, y, 'player');
+        this.canMove = true; // false if sidebar etc is open
         // Add this entity to the scene's physics
         this.scene.physics.world.enable(this);
         // Add this entity to the scene's update list
@@ -57,7 +58,7 @@ class Player extends phaser_1.default.Physics.Arcade.Sprite {
             }
         }
         // Check for input and update target if necessary
-        if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1) {
+        if (phaser_1.default.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) < 1 && this.canMove) {
             if (((_a = this.cursorKeys.up) === null || _a === void 0 ? void 0 : _a.isDown) && (directionLocal == 0 || directionLocal == 1 /* MOVEMENT_DIRECTION.Up */)) {
                 this.target.y -= (modTargetY === 0) ? TILE_WIDTH : (TILE_WIDTH - Math.abs(modTargetY));
                 this.direction = 1 /* MOVEMENT_DIRECTION.Up */;

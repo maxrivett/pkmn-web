@@ -54,6 +54,16 @@ class PlayerData {
         const data = JSON.stringify(this.data);
         localStorage.setItem(this.storageKey, data);
     }
+    getName() {
+        return this.data.name;
+    }
+    getPokemon() {
+        return this.data.pokemon;
+    }
+    setPokemon(pokemon) {
+        // TODO: make sure not more than 6
+        this.data.pokemon = pokemon;
+    }
 }
 exports.default = PlayerData;
 //# sourceMappingURL=PlayerData.js.map

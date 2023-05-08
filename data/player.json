@@ -8,5 +8,5 @@
       "x": 300,
       "y": 400
     },
-    "pokemon": [1, 2, 3]
+    "pokemon": ["Charmander"]
   }
